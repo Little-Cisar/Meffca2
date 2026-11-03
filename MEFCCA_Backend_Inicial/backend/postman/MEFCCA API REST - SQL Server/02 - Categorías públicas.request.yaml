@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/categorias"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Consulta de categorías responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      if (data.categorias && data.categorias.length) { pm.collectionVariables.set('categoryId', data.categorias[0].id_categoria); }
+      pm.test('La respuesta contiene una lista de categorías', function () { pm.expect(data.categorias).to.be.an('array'); });
+    language: text/javascript
+order: 2000

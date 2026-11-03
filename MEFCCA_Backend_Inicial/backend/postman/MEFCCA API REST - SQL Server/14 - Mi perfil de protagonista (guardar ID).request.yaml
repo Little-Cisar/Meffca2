@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/protagonistas/me"
+method: GET
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Mi perfil responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      if (data.protagonista && data.protagonista.id_protagonista) pm.collectionVariables.set('protagonistId', data.protagonista.id_protagonista);
+      pm.test('La respuesta contiene el perfil propio', function () { pm.expect(data.protagonista.id_protagonista).to.exist; });
+    language: text/javascript
+order: 7000

@@ -1,0 +1,13 @@
+$kind: http-request
+description: Devuelve solo el resumen e historial de interacciones de productos que pertenecen al protagonista autenticado.
+url: "{{baseUrl}}/interacciones/mis"
+method: GET
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Resumen propio responde correctamente', function () { pm.response.to.have.status(200); });
+      pm.test('La respuesta incluye resumen e interacciones', function () { const data = pm.response.json(); pm.expect(data.resumen).to.be.an('object'); pm.expect(data.interacciones).to.be.an('array'); });
+    language: text/javascript
+order: 22000

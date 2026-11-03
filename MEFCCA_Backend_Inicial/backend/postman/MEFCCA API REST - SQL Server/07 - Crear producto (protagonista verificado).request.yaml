@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/productos"
+method: POST
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre_producto": "Taza artesanal de prueba",
+      "id_categoria": {{categoryId}},
+      "descripcion": "Producto de demostración para probar el catálogo.",
+      "precio": 250.00,
+      "imagen": null,
+      "stock_actual": 10
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Producto creado (201)', function () { pm.response.to.have.status(201); });
+      const data = pm.response.json();
+      if (data.producto && data.producto.id_producto) pm.collectionVariables.set('productId', data.producto.id_producto);
+      pm.test('La respuesta incluye el producto creado', function () { pm.expect(data.producto.id_producto).to.exist; });
+    language: text/javascript
+order: 14000

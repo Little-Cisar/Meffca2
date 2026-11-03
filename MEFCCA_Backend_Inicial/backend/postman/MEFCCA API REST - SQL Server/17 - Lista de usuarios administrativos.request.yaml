@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/admin/usuarios"
+method: GET
+headers:
+  Authorization: Bearer {{tokenAdmin}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Lista administrativa responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('La respuesta no debe exponer contraseñas', function () { const raw = pm.response.text(); pm.expect(raw).not.to.include('password_hash'); });
+    language: text/javascript
+order: 8000

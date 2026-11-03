@@ -1,0 +1,20 @@
+$kind: http-request
+description: Usa un productId activo de un protagonista verificado. Esta solicitud es anónima (sin Authorization); la interfaz autenticada asocia el id_usuario mediante un JWT válido.
+url: "{{baseUrl}}/interacciones"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "id_producto": {{productId}},
+      "tipo_accion": "Clic en WhatsApp"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Interacción registrada', function () { pm.response.to.have.status(201); });
+      pm.test('La respuesta incluye la interacción', function () { pm.expect(pm.response.json().interaccion).to.be.an('object'); });
+    language: text/javascript
+order: 20000

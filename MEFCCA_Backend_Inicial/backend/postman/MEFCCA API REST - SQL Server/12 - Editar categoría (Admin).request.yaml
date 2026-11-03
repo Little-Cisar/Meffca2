@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/categorias/{{categoryId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{tokenAdmin}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre_categoria": "Categoría de prueba editada {{$timestamp}}",
+      "descripcion": "Descripción actualizada por el administrador."
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test('Categoría actualizada (200)', function () { pm.response.to.have.status(200); });
+    language: text/javascript
+order: 19000

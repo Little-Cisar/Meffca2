@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/productos/{{productId}}/estado"
+method: PATCH
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "estado": "Inactivo"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Desactivación lógica responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('Producto queda Inactivo', function () { pm.expect(pm.response.json().producto.estado).to.eql('Inactivo'); });
+    language: text/javascript
+order: 17000

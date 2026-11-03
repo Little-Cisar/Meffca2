@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/admin/protagonistas/pendientes"
+method: GET
+headers:
+  Authorization: Bearer {{tokenAdmin}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Consulta de pendientes responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('La respuesta contiene una lista', function () { pm.expect(pm.response.json().protagonistas).to.be.an('array'); });
+    language: text/javascript
+order: 9000

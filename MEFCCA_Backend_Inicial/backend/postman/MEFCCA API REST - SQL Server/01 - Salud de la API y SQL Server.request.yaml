@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/health"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('API responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('SQL Server aparece conectado', function () { pm.expect(pm.response.json().base_de_datos).to.eql('conectada'); });
+    language: text/javascript
+order: 1000

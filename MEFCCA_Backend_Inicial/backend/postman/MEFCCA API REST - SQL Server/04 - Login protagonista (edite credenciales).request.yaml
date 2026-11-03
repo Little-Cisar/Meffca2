@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "protagonista.prueba@example.com",
+      "password": "Prueba123!"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Login protagonista responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      if (data.token) pm.collectionVariables.set('tokenProtagonista', data.token);
+      pm.test('Se recibió token JWT', function () { pm.expect(data.token).to.be.a('string'); });
+    language: text/javascript
+order: 4000

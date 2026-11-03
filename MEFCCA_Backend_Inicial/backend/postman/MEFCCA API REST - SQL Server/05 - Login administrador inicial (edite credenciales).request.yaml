@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "admin.prueba@mefcca.local",
+      "password": "CAMBIAR_POR_LA_CLAVE_ELEGIDA"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Login administrador responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      if (data.token) pm.collectionVariables.set('tokenAdmin', data.token);
+      pm.test('La cuenta tiene rol Admin', function () { pm.expect(data.usuario.rol).to.eql('Admin'); });
+    language: text/javascript
+order: 5000

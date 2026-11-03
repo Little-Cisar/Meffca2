@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/categorias"
+method: POST
+headers:
+  Authorization: Bearer {{tokenAdmin}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre_categoria": "Categoría de prueba {{$timestamp}}",
+      "descripcion": "Registro temporal para validar el mantenimiento de categorías."
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Categoría creada (201)', function () { pm.response.to.have.status(201); });
+      const data = pm.response.json();
+      if (data.categoria && data.categoria.id_categoria) pm.collectionVariables.set('categoryId', data.categoria.id_categoria);
+    language: text/javascript
+order: 18000

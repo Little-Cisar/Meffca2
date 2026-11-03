@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/protagonistas/{{protagonistId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre_negocio": "Emprendimiento de prueba",
+      "telefono_whatsapp": "+505 8888 0000",
+      "departamento": "Masaya",
+      "descripcion_negocio": "Perfil de prueba para verificar la edición desde la API. Cambiar por los datos propios antes de guardar."
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test('Actualización de perfil propio responde 200', function () { pm.response.to.have.status(200); });
+    language: text/javascript
+order: 12000

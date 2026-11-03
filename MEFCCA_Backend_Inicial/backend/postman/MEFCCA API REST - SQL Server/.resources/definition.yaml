@@ -1,0 +1,11 @@
+$kind: collection
+description: Pruebas de autenticación, catálogo, categorías, perfiles, verificación administrativa, interacciones y reporte administrativo.
+variables:
+  baseUrl: http://localhost:3000/api
+  tokenProtagonista: ""
+  tokenAdmin: ""
+  productId: ""
+  categoryId: ""
+  protagonistId: ""
+  tokenCliente: ""
+  saleId: ""

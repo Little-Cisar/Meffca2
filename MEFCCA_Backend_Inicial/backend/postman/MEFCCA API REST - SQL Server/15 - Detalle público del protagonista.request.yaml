@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/protagonistas/{{protagonistId}}"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Detalle público responde 200 para un perfil verificado', function () { pm.response.to.have.status(200); });
+      pm.test('La respuesta contiene un protagonista', function () { pm.expect(pm.response.json().protagonista.id_protagonista).to.exist; });
+    language: text/javascript
+order: 11000

@@ -1,0 +1,13 @@
+$kind: http-request
+description: Devuelve solamente ventas vinculadas a la cuenta Cliente con la que se inició sesión.
+url: "{{baseUrl}}/ventas/compras"
+method: GET
+headers:
+  Authorization: Bearer {{tokenCliente}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Historial de compras responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('Incluye un arreglo de compras', function () { pm.expect(pm.response.json().compras).to.be.an('array'); });
+    language: text/javascript
+order: 26000

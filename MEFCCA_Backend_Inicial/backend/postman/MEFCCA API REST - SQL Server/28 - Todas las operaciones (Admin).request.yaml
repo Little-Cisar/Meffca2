@@ -1,0 +1,13 @@
+$kind: http-request
+description: Consulta administrativa de las últimas 200 operaciones.
+url: "{{baseUrl}}/ventas"
+method: GET
+headers:
+  Authorization: Bearer {{tokenAdmin}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Consulta administrativa responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('Incluye un arreglo de ventas', function () { pm.expect(pm.response.json().ventas).to.be.an('array'); });
+    language: text/javascript
+order: 28000

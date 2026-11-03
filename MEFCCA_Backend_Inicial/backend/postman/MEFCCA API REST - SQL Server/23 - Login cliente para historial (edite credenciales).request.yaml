@@ -1,0 +1,22 @@
+$kind: http-request
+description: Use las credenciales de una cuenta Cliente de prueba; guarda tokenCliente si el login responde 200.
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "cliente.prueba@example.com",
+      "password": "Prueba123!"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Login cliente responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      if (data.token) pm.collectionVariables.set('tokenCliente', data.token);
+      pm.test('Se recibió token JWT de cliente', function () { pm.expect(data.token).to.be.a('string'); });
+    language: text/javascript
+order: 23000

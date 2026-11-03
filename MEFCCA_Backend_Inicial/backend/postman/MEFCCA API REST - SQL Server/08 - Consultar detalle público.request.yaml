@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/productos/{{productId}}"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Detalle responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('La respuesta contiene producto', function () { pm.expect(pm.response.json().producto.id_producto).to.exist; });
+    language: text/javascript
+order: 15000

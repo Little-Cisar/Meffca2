@@ -1,0 +1,13 @@
+$kind: http-request
+description: Devuelve las operaciones de venta del protagonista autenticado.
+url: "{{baseUrl}}/ventas/mias"
+method: GET
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Historial de ventas responde 200', function () { pm.response.to.have.status(200); });
+      pm.test('Incluye un arreglo de ventas', function () { pm.expect(pm.response.json().ventas).to.be.an('array'); });
+    language: text/javascript
+order: 25000

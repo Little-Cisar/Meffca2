@@ -1,0 +1,31 @@
+$kind: http-request
+description: Requiere protagonista verificado, un producto activo con al menos una unidad y una cuenta Cliente existente con el correo indicado. Cambie el correo de ejemplo si es necesario.
+url: "{{baseUrl}}/ventas"
+method: POST
+headers:
+  Authorization: Bearer {{tokenProtagonista}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "detalles": [
+        {
+          "id_producto": "{{productId}}",
+          "cantidad": 1
+        }
+      ],
+      "comprador_email": "cliente.prueba@example.com",
+      "metodo_pago": "Efectivo",
+      "metodo_entrega": "Entrega presencial",
+      "observaciones": "Operación de demostración previamente acordada"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Venta registrada (201)', function () { pm.response.to.have.status(201); });
+      const data = pm.response.json();
+      if (data.venta && data.venta.id_venta) pm.collectionVariables.set('saleId', String(data.venta.id_venta));
+      pm.test('La respuesta incluye la venta y total', function () { pm.expect(data.venta.id_venta).to.exist; pm.expect(data.venta.total).to.be.a('number'); });
+    language: text/javascript
+order: 24000

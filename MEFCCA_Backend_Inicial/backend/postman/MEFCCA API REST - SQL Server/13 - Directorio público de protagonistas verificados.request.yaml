@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/protagonistas"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Directorio público responde 200', function () { pm.response.to.have.status(200); });
+      const data = pm.response.json();
+      pm.test('La respuesta contiene protagonistas', function () { pm.expect(data.protagonistas).to.be.an('array'); });
+      if (data.protagonistas && data.protagonistas.length) pm.collectionVariables.set('protagonistId', data.protagonistas[0].id_protagonista);
+    language: text/javascript
+order: 6000
