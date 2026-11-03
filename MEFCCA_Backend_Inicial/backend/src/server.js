@@ -10,7 +10,7 @@ async function startServer() {
 
   await connectToDatabase();
   const port = Number(process.env.PORT || 3000);
-  const server = app.listen(port, () => {
+  const server = app.listen(port, '0.0.0.0', () => {
     console.log(`API MEFCCA disponible en http://localhost:${port}`);
     console.log(`Comprobación de salud: http://localhost:${port}/api/health`);
   });
